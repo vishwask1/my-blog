@@ -25,7 +25,7 @@ const { authors } = Astro.props;
             />
           </div>
         )}
-        <h3 class="h4 mt-8 mb-3">
+        <h3 class="h4 mt-8 mb-3 text-dark dark:text-white">
           <a
             href={`/authors/${author.id}`}
             class="block hover:text-primary transition duration-200"
@@ -34,8 +34,7 @@ const { authors } = Astro.props;
           </a>
         </h3>
         {author.body && (
-          <p class="mb-3" set:text={markdownify(author.body.slice(0, 100))} />
-        )}
+          <p class="mb-3 dark:text-gray-300" set:text={markdownify(author.body.slice(0, 100))} />
 
         <a
           href={`/authors/${author.id}`}

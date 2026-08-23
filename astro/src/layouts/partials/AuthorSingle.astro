@@ -9,7 +9,7 @@ const { title, image, social } = author.data;
 const { Content } = await render(author);
 ---
 
-<section class="section">
+<section class="section bg-white dark:bg-gray-900 transition-colors">
   <div class="container">
     <div class="mb-4 text-center md:px-24">
       {
@@ -25,10 +25,10 @@ const { Content } = await render(author);
           </div>
         )
       }
-      <h1 set:html={markdownify(title)} class="page-heading h2 mb-8" />
+      <h1 set:html={markdownify(title)} class="page-heading h2 mb-8 text-dark dark:text-white" />
 
       <Social source={social} className="social-icons-simple" />
-      <div class="content">
+      <div class="content text-dark dark:text-gray-200">
         <Content />
       </div>
     </div>

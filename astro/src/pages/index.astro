@@ -13,7 +13,7 @@ const currentPosts = sortedPosts.slice(0, config.settings.pagination);
 ---
 
 <Base>
-  <section class="section">
+  <section class="section bg-white dark:bg-gray-900 transition-colors">
     <div class="container">
       <Posts posts={currentPosts} className="mb-16" />
       <Pagination currentPage={1} totalPages={totalPages} />

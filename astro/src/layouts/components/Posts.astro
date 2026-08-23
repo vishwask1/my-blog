@@ -36,7 +36,7 @@ const { className, posts, fluid } = Astro.props;
             />
           </a>
         )}
-        <ul class="mt-6 mb-4 flex flex-wrap items-center text-text">
+       <ul class="mt-6 mb-4 flex flex-wrap items-center text-text dark:text-gray-300">
           <li class="mr-5">
             {authors
               .filter((author) =>
@@ -63,11 +63,11 @@ const { className, posts, fluid } = Astro.props;
               ))}
           </li>
           <li class="mr-5 flex items-center flex-wrap font-medium">
-            <BiCalendarEdit className="mr-1 h-5 w-5 text-gray-600" />
+            <BiCalendarEdit className="mr-1 h-5 w-5 text-gray-600 dark:text-gray-400" />
             {dateFormat(post.data.date!)}
           </li>
           <li class="mr-5 flex items-center flex-wrap">
-            <BiCategoryAlt className="mr-1 h-[18px] w-[18px] text-gray-600" />
+            <BiCategoryAlt className="mr-1 h-[18px] w-[18px] text-gray-600 dark:text-gray-400" />
 
             <ul>
               {post.data.categories.map((category, i: number) => (
@@ -84,7 +84,7 @@ const { className, posts, fluid } = Astro.props;
             </ul>
           </li>
         </ul>
-        <h3 class="mb-4">
+        <h3 class="mb-4 text-dark dark:text-white">
           <a
             href={`/blog/${post.id}`}
             class="block hover:text-primary transition duration-300"
@@ -92,7 +92,9 @@ const { className, posts, fluid } = Astro.props;
             {post.data.title}
           </a>
         </h3>
-        <p class="text-text line-clamp-2">{plainify(post.body ?? "")}</p>
+        <p class="text-text dark:text-gray-300 line-clamp-2">
+          {post.data.description || plainify(post.body ?? "")}
+        </p>
       </div>
     ))
   }
