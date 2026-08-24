@@ -1,37 +1,47 @@
 ---
-import Posts from "@/components/Posts.astro";
-import Base from "@/layouts/Base.astro";
-import { getSinglePage } from "@/lib/contentParser.astro";
-import { getTaxonomy } from "@/lib/taxonomyParser.astro";
-import { sortByDate } from "@/lib/utils/sortFunctions";
-import taxonomyFilter from "@/lib/utils/taxonomyFilter";
-import { humanize } from "@/lib/utils/textConverter";
+import type { GetStaticPaths } from "astro";
+import { getCollection } from "astro:content";
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
+import Breadcrumb from "@/components/Breadcrumb.astro";
+import Main from "@/components/Main.astro";
+import Card from "@/components/Card.astro";
+import Footer from "@/components/Footer.astro";
+import { postFilter } from "@/utils/postFilter";
+import { slugifyStr } from "@/utils/slugify";
+import config from "@/config";
 
-export async function getStaticPaths() {
-  const categories = await getTaxonomy("posts", "categories");
+export const getStaticPaths = (async () => {
+  const posts = await getCollection("posts", postFilter);
+  const categories = new Set(
+    posts.flatMap(post => post.data.categories.map(slugifyStr))
+  );
 
-  return categories.map((category) => {
-    return {
-      params: { category },
-    };
-  });
-}
+  return [...categories].map(category => ({ params: { category } }));
+}) satisfies GetStaticPaths;
 
 const { category } = Astro.params;
-
-const posts = await getSinglePage("posts");
-const filterByCategory = taxonomyFilter(posts, "categories", category);
-const sortedPosts = sortByDate(filterByCategory);
-
-const title = humanize(category || "");
+const posts = await getCollection("posts", postFilter);
+const categoryPosts = posts
+  .filter(post =>
+    post.data.categories.some(value => slugifyStr(value) === category)
+  )
+  .sort(
+    (first, second) =>
+      second.data.pubDatetime.valueOf() - first.data.pubDatetime.valueOf()
+  );
+const title = category
+  ? category.charAt(0).toUpperCase() + category.slice(1)
+  : "Category";
 ---
 
-<Base title={title || "Category"}>
-  <div class="section">
-    <div class="container">
-      <p class="text-center text-2xl mb-4">Showing Posts From</p>
-      <h1 class="h2 mb-16 text-center text-primary">{title}</h1>
-      <Posts posts={sortedPosts} fluid={false} />
-    </div>
-  </div>
-</Base>
+<Layout title={`${title} | ${config.site.title}`}>
+  <Header />
+  <Breadcrumb />
+  <Main pageTitle={title} pageDesc={`Writing filed under ${title}.`}>
+    <ul>
+      {categoryPosts.map(post => <Card {...post} />)}
+    </ul>
+  </Main>
+  <Footer />
+</Layout>
