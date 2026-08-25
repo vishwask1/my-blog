@@ -3,8 +3,8 @@ import { defineAstroPaperConfig } from "./src/types/config";
 export default defineAstroPaperConfig({
   site: {
     url: "https://example.com/",
-    title: "Vishwas's",
-    description: "Poems, stories, and quiet observations...",
+    title: "Vishwas",
+    description: "Poems, travelogues, and other scribblings",
     author: "Vishwas",
     ogImage: "default-og.jpg",
     lang: "en",
@@ -22,13 +22,13 @@ export default defineAstroPaperConfig({
     showArchives: true,
     showBackButton: true,
     editPost: {
-      enabled: true,
-      url: "https://github.com/vishwask1/my-blog/edit/main/astro/",
+      enabled: false,
     },
     search: "pagefind",
   },
   socials: [
     { name: "github", url: "https://github.com/vishwask1" },
+    { name: "x", url: "https://x.com/vishwask1" },
   ],
   shareLinks: [
     { name: "x",        url: "https://x.com/intent/post?url=" },

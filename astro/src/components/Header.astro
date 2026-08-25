@@ -32,6 +32,9 @@ const isActive = (path: string) => {
   const pathArray = path.split("/").filter(p => p.trim());
   return currentPath === path || currentPathArray[0] === pathArray[0];
 };
+
+const isCategoryActive = (category: string) =>
+  currentPath === `/categories/${category}`;
 ---
 
 <a
@@ -56,7 +59,7 @@ const isActive = (path: string) => {
     </a>
     <nav
       id="nav-menu"
-      class="flex w-full flex-col items-center sm:ms-2 sm:flex-row sm:justify-end sm:space-x-4 sm:py-0"
+      class="flex w-full flex-col items-center sm:ms-2 sm:flex-row sm:justify-end sm:space-x-4 sm:pe-2 sm:py-0"
     >
       <button
         id="menu-btn"
@@ -72,7 +75,7 @@ const isActive = (path: string) => {
       </button>
       <ul
         id="menu-items"
-        class="[&>li>a]:hover:text-accent mt-4 hidden w-44 grid-cols-2 place-content-center gap-2 sm:mt-0 sm:flex sm:w-auto sm:gap-x-5 sm:gap-y-0 sm:[&>li]:h-8 [&>li>a]:block [&>li>a]:px-4 [&>li>a]:py-3 [&>li>a]:text-center [&>li>a]:font-medium sm:[&>li>a]:px-2 sm:[&>li>a]:py-1"
+        class="[&>li>a]:hover:text-accent mt-4 hidden w-44 grid-cols-2 place-content-center gap-2 sm:relative sm:left-4 sm:mt-0 sm:flex sm:w-auto sm:gap-x-5 sm:gap-y-0 sm:[&>li]:h-8 [&>li>a]:block [&>li>a]:px-4 [&>li>a]:py-3 [&>li>a]:text-center [&>li>a]:font-medium sm:[&>li>a]:px-2 sm:[&>li>a]:py-1"
       >
         <li class="col-span-2">
           <a
@@ -83,15 +86,34 @@ const isActive = (path: string) => {
           </a>
         </li>
         <li class="col-span-2">
-          <a href={getRelativeLocaleUrl(locale, "categories/travel")}>Travel</a>
-        </li>
-        <li class="col-span-2">
-          <a href={getRelativeLocaleUrl(locale, "categories/poems")}>
+          <a
+            href={getRelativeLocaleUrl(locale, "categories/poems")}
+            class:list={{ "active-nav": isCategoryActive("poems") }}
+          >
             Poems
           </a>
         </li>
         <li class="col-span-2">
-          <a href={getRelativeLocaleUrl(locale, "categories/stories")}>
+          <a
+            href={getRelativeLocaleUrl(locale, "categories/travel")}
+            class:list={{ "active-nav": isCategoryActive("travel") }}
+          >
+            Travel
+          </a>
+        </li>
+        <li class="col-span-2">
+          <a
+            href={getRelativeLocaleUrl(locale, "categories/sports")}
+            class:list={{ "active-nav": isCategoryActive("sports") }}
+          >
+            Sports
+          </a>
+        </li>
+        <li class="col-span-2">
+          <a
+            href={getRelativeLocaleUrl(locale, "categories/stories")}
+            class:list={{ "active-nav": isCategoryActive("stories") }}
+          >
             Stories
           </a>
         </li>
