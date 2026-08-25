@@ -4,7 +4,8 @@ export default defineAstroPaperConfig({
   site: {
     url: "https://example.com/",
     title: "Vishwas",
-    description: "Poems, travelogues, and other scribblings",
+    tagline: "What is not spoken is written",
+    description: "A small archive of my writings — poems, travelogues, and other scribblings",
     author: "Vishwas",
     ogImage: "default-og.jpg",
     lang: "en",

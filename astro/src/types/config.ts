@@ -3,6 +3,8 @@ interface SiteConfig {
   url: string;
   /** Blog title shown in header and meta tags */
   title: string;
+  /** Short homepage tagline shown below the site title */
+  tagline?: string;
   /** Short description used in SEO meta and RSS feed */
   description: string;
   /** Default post author name */
@@ -107,6 +109,7 @@ type ResolvedSiteConfig = Required<
     SiteConfig,
     | "url"
     | "title"
+    | "tagline"
     | "description"
     | "author"
     | "lang"
