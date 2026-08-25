@@ -3,12 +3,12 @@ import { defineAstroPaperConfig } from "./src/types/config";
 export default defineAstroPaperConfig({
   site: {
     url: "https://example.com/",
-    title: "Vishwas Writes",
-    description: "Poems, stories, and quiet observations by Vishwas.",
+    title: "Vishwas's",
+    description: "Poems, stories, and quiet observations...",
     author: "Vishwas",
     ogImage: "default-og.jpg",
     lang: "en",
-    timezone: "Asia/Bangkok",
+    timezone: "Asia/Kolkata",
     dir: "ltr",
   },
   posts: {
