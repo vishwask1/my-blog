@@ -38,7 +38,7 @@ const title = category
 <Layout title={`${title} | ${config.site.title}`}>
   <Header />
   <Breadcrumb />
-  <Main pageTitle={title} pageDesc={`Writing filed under ${title}.`}>
+  <Main pageTitle={title} pageDesc={``}>
     <ul>
       {categoryPosts.map(post => <Card {...post} />)}
     </ul>
