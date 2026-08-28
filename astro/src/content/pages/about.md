@@ -3,7 +3,7 @@ title: About
 description: "About Vishwas and this collection of writing."
 ---
 
-To write was a dream — unfulfilled, like most dreams are. But I write anyway. So here you'll find my failed attempts, scattered across different topics, trying to make sense of things I couldn't otherwise.
+To write was a dream — unfulfilled, like most dreams. But I write anyway. So here you'll find my failed attempts, scattered across different topics, trying to make sense of things I couldn't otherwise.
 
 To pay the bills, I code. Or at least I used to; now I just prompt.
 
