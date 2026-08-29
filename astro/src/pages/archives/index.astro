@@ -8,6 +8,7 @@ import Main from "@/components/Main.astro";
 import Footer from "@/components/Footer.astro";
 import Card from "@/components/Card.astro";
 import { postFilter } from "@/utils/postFilter";
+import { slugifyStr } from "@/utils/slugify";
 import { getPostsByGroupCondition } from "./_utils/getPostsByGroupCondition";
 import { useTranslations } from "@/i18n";
 import config from "@/config";
@@ -25,6 +26,13 @@ const t = useTranslations(locale);
 const posts = await getCollection("posts");
 const filteredPosts = posts.filter(postFilter);
 const monthFormatter = new Intl.DateTimeFormat(locale, { month: "long" });
+const categoryNames = [...new Set(filteredPosts.flatMap(post => post.data.categories))].sort((a, b) => a.localeCompare(b));
+const categoryCounts = Object.fromEntries(
+  categoryNames.map(category => [
+    slugifyStr(category),
+    filteredPosts.filter(post => post.data.categories.includes(category)).length,
+  ])
+);
 ---
 
 <Layout title={`${t.pages.archivesTitle} | ${config.site.title}`}>
@@ -33,6 +41,26 @@ const monthFormatter = new Intl.DateTimeFormat(locale, { month: "long" });
   <Breadcrumb />
 
   <Main pageTitle={t.pages.archivesTitle} pageDesc={t.pages.archivesDesc}>
+    <div class="mb-8 flex flex-wrap gap-2">
+      <button
+        type="button"
+        class="archive-filter-btn is-active"
+        data-filter="all"
+      >
+        All
+      </button>
+      {categoryNames.map(category => (
+        <button
+          type="button"
+          class="archive-filter-btn"
+          data-filter={slugifyStr(category)}
+        >
+          {category}
+          <span class="text-[10px] opacity-70">({categoryCounts[slugifyStr(category)] ?? 0})</span>
+        </button>
+      ))}
+    </div>
+
     {
       Object.entries(
         getPostsByGroupCondition(filteredPosts, post =>
@@ -41,7 +69,7 @@ const monthFormatter = new Intl.DateTimeFormat(locale, { month: "long" });
       )
         .sort(([yearA], [yearB]) => Number(yearB) - Number(yearA))
         .map(([year, yearGroup]) => (
-          <div>
+          <div class="archive-year-group">
             <span class="text-2xl font-bold">{year}</span>
             <sup class="text-muted-foreground text-sm">{yearGroup.length}</sup>
             {Object.entries(
@@ -52,7 +80,7 @@ const monthFormatter = new Intl.DateTimeFormat(locale, { month: "long" });
             )
               .sort(([monthA], [monthB]) => Number(monthB) - Number(monthA))
               .map(([month, monthGroup]) => (
-                <div class="flex flex-col sm:flex-row">
+                <div class="archive-month-group flex flex-col sm:flex-row">
                   <div class="mt-6 min-w-36 text-lg sm:my-6">
                     <span class="font-bold">
                       {monthFormatter.format(
@@ -75,7 +103,17 @@ const monthFormatter = new Intl.DateTimeFormat(locale, { month: "long" });
                           )
                       )
                       .map(data => (
-                        <Card {...data} />
+                        <div
+                          class="archive-item"
+                          data-category={data.data.categories
+                            .map(category => slugifyStr(category))
+                            .join(" ")}
+                          data-tags={data.data.tags
+                            .map(tag => slugifyStr(tag))
+                            .join(" ")}
+                        >
+                          <Card {...data} />
+                        </div>
                       ))}
                   </ul>
                 </div>
@@ -87,3 +125,71 @@ const monthFormatter = new Intl.DateTimeFormat(locale, { month: "long" });
 
   <Footer />
 </Layout>
+
+<script>
+  const filterButtons = document.querySelectorAll<HTMLButtonElement>(
+    ".archive-filter-btn"
+  );
+  const archiveItems = document.querySelectorAll<HTMLElement>(".archive-item");
+  const archiveMonthGroups = document.querySelectorAll<HTMLElement>(
+    ".archive-month-group"
+  );
+  const archiveYearGroups = document.querySelectorAll<HTMLElement>(
+    ".archive-year-group"
+  );
+
+  function applyFilters(currentFilter: string) {
+    let visibleCount = 0;
+
+    archiveItems.forEach(item => {
+      const categoryValues = (item.dataset.category || "")
+        .split(" ")
+        .filter(Boolean);
+      const tagValues = (item.dataset.tags || "").split(" ").filter(Boolean);
+      const matches =
+        currentFilter === "all" ||
+        categoryValues.includes(currentFilter) ||
+        tagValues.includes(currentFilter);
+
+      item.style.display = matches ? "" : "none";
+      if (matches) visibleCount += 1;
+    });
+
+    archiveMonthGroups.forEach(group => {
+      const monthItems = group.querySelectorAll<HTMLElement>(".archive-item");
+      const hasVisibleItems = Array.from(monthItems).some(
+        item => item.style.display !== "none"
+      );
+      group.style.display = hasVisibleItems ? "" : "none";
+    });
+
+    archiveYearGroups.forEach(group => {
+      const yearItems = group.querySelectorAll<HTMLElement>(".archive-item");
+      const hasVisibleItems = Array.from(yearItems).some(
+        item => item.style.display !== "none"
+      );
+      group.style.display = hasVisibleItems ? "" : "none";
+    });
+
+    const emptyState = document.querySelector<HTMLElement>(".archive-empty-state");
+    if (emptyState) {
+      emptyState.style.display = visibleCount === 0 ? "block" : "none";
+    }
+  }
+
+  filterButtons.forEach(button => {
+    button.addEventListener("click", () => {
+      const currentFilter = button.dataset.filter ?? "all";
+
+      filterButtons.forEach(btn => {
+        btn.classList.toggle("is-active", btn === button);
+      });
+
+      applyFilters(currentFilter);
+    });
+  });
+</script>
+
+<div class="archive-empty-state hidden py-8 text-muted-foreground italic">
+  No posts match this category yet.
+</div>
