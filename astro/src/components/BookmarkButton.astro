@@ -1,0 +1,120 @@
+---
+type FavoriteItem = {
+  id: string;
+  title: string;
+  url: string;
+  savedAt: string;
+};
+
+type Props = {
+  postId: string;
+  postTitle: string;
+  postUrl: string;
+  class?: string;
+};
+
+const { postId, postTitle, postUrl, class: className = "" } = Astro.props;
+---
+
+<button
+  type="button"
+  class:list={[
+    "bookmark-button inline-flex items-center gap-2 rounded-full border border-border px-2.5 py-1.5 text-xs font-medium transition-colors",
+    "hover:border-accent hover:text-accent",
+    className,
+  ]}
+  data-bookmark-button
+  data-post-id={postId}
+  data-post-title={postTitle}
+  data-post-url={postUrl}
+  aria-label="Save this post"
+>
+  <svg
+    class="bookmark-icon size-4"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.8"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    aria-hidden="true"
+  >
+    <path d="M7 4.75A1.75 1.75 0 0 1 8.75 3h6.5A1.75 1.75 0 0 1 17 4.75v15.1l-5-3.2-5 3.2V4.75Z" />
+  </svg>
+  <span class="bookmark-label">Save</span>
+</button>
+
+<script>
+  type FavoriteItem = {
+    id: string;
+    title: string;
+    url: string;
+    savedAt: string;
+  };
+
+  const storageKey = "my-blog-favorites";
+
+  const button = document.querySelector<HTMLButtonElement>("[data-bookmark-button]");
+  if (button) {
+    const postId = button.dataset.postId ?? "";
+    const postTitle = button.dataset.postTitle || "Untitled";
+    const postUrl = button.dataset.postUrl || "";
+
+    const readFavorites = (): FavoriteItem[] => {
+      try {
+        const stored = localStorage.getItem(storageKey);
+        return stored ? (JSON.parse(stored) as FavoriteItem[]) : [];
+      } catch {
+        return [];
+      }
+    };
+
+    const writeFavorites = (favorites: FavoriteItem[]) => {
+      localStorage.setItem(storageKey, JSON.stringify(favorites));
+    };
+
+    const updateState = () => {
+      const favorites = readFavorites();
+      const isSaved = favorites.some((item: FavoriteItem) => item.id === postId);
+      const icon = button.querySelector(".bookmark-icon");
+      const label = button.querySelector(".bookmark-label");
+
+      if (icon) {
+        icon.setAttribute("fill", isSaved ? "currentColor" : "none");
+      }
+
+      if (label) {
+        label.textContent = isSaved ? "Saved" : "Save";
+      }
+
+      button.setAttribute(
+        "aria-label",
+        isSaved ? "Remove this saved post" : "Save this post"
+      );
+      button.classList.toggle("text-accent", isSaved);
+      button.classList.toggle("border-accent", isSaved);
+    };
+
+    button.addEventListener("click", () => {
+      const favorites = readFavorites();
+      const exists = favorites.some((item: FavoriteItem) => item.id === postId);
+
+      const nextFavorites = exists
+        ? favorites.filter((item: FavoriteItem) => item.id !== postId)
+        : [
+            ...favorites,
+            {
+              id: postId,
+              title: postTitle,
+              url: postUrl,
+              savedAt: new Date().toISOString(),
+            },
+          ];
+
+      writeFavorites(nextFavorites);
+      updateState();
+    });
+
+    updateState();
+  }
+</script>

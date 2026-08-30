@@ -11,6 +11,13 @@ import LinkButton from "./LinkButton.astro";
 import { stripBase, stripLocale } from "@/utils/withBase";
 import { useTranslations } from "@/i18n";
 import config from "@/config";
+import { getCollection } from "astro:content";
+
+const posts = await getCollection("posts");
+const topicLinks = (await import("@/utils/getUniqueCategories")).getUniqueCategories(posts).map(({ label, slug }) => ({
+  label,
+  href: `categories/${slug}`,
+}));
 
 const { site, features } = config;
 
@@ -45,21 +52,20 @@ const isCategoryActive = (category: string) =>
   {t.a11y.skipToContent}
 </a>
 
-<header
-  class="app-layout flex flex-col items-center justify-between sm:flex-row"
->
+<header class="app-layout">
   <div
-    class="border-border bg-background relative flex w-full items-baseline justify-between border-b py-4 sm:items-center sm:py-6"
+    class="border-border bg-background grid w-full grid-cols-[1fr_auto_1fr] items-center border-b py-4 sm:py-6"
   >
     <a
       href={getRelativeLocaleUrl(locale, "")}
-      class="absolute py-1 text-xl leading-8 font-semibold whitespace-nowrap sm:static sm:my-auto sm:text-2xl sm:leading-none"
+      class="justify-self-start text-xl leading-8 font-semibold whitespace-nowrap sm:text-2xl sm:leading-none"
     >
       {site.title}
     </a>
+
     <nav
       id="nav-menu"
-      class="flex w-full flex-col items-center sm:ms-2 sm:flex-row sm:justify-end sm:space-x-4 sm:pe-2 sm:py-0"
+      class="justify-self-center"
     >
       <button
         id="menu-btn"
@@ -75,9 +81,9 @@ const isCategoryActive = (category: string) =>
       </button>
       <ul
         id="menu-items"
-        class="[&>li>a]:hover:text-accent mt-4 hidden w-44 grid-cols-2 place-content-center gap-2 sm:relative sm:left-4 sm:mt-0 sm:flex sm:w-auto sm:gap-x-5 sm:gap-y-0 sm:[&>li]:h-8 [&>li>a]:block [&>li>a]:px-4 [&>li>a]:py-3 [&>li>a]:text-center [&>li>a]:font-medium sm:[&>li>a]:px-2 sm:[&>li>a]:py-1"
+        class="[&>li>a]:hover:text-accent [&>li>button]:hover:text-accent mt-4 hidden w-52 gap-2 sm:relative sm:left-0 sm:mt-0 sm:flex sm:w-auto sm:items-center sm:justify-center sm:gap-x-0.5 sm:gap-y-1 sm:[&>li]:h-auto [&>li>a]:block [&>li>a]:px-2 [&>li>a]:py-1.5 [&>li>a]:text-center [&>li>a]:font-medium sm:[&>li>a]:px-1.5 sm:[&>li>a]:py-1 [&>li>button]:block [&>li>button]:px-2 [&>li>button]:py-1.5 [&>li>button]:text-center [&>li>button]:font-medium sm:[&>li>button]:px-1.5 sm:[&>li>button]:py-1"
       >
-        <li class="col-span-2">
+        <li>
           <a
             href={getRelativeLocaleUrl(locale, "posts")}
             class:list={{ "active-nav": isActive("/posts") }}
@@ -85,39 +91,35 @@ const isCategoryActive = (category: string) =>
             {t.nav.posts}
           </a>
         </li>
-        <li class="col-span-2">
-          <a
-            href={getRelativeLocaleUrl(locale, "categories/poems")}
-            class:list={{ "active-nav": isCategoryActive("poems") }}
+        <li class="relative">
+          <button
+            id="topics-toggle"
+            type="button"
+            class="focus-outline inline-flex items-center gap-1 rounded-md px-1.5 py-1 transition-colors hover:text-accent"
+            aria-expanded="false"
+            aria-controls="topics-menu"
           >
-            Poems
-          </a>
-        </li>
-        <li class="col-span-2">
-          <a
-            href={getRelativeLocaleUrl(locale, "categories/travel")}
-            class:list={{ "active-nav": isCategoryActive("travel") }}
+            <span>Topics</span>
+            <span aria-hidden="true" class="text-xs">▾</span>
+          </button>
+          <ul
+            id="topics-menu"
+            class="border-border bg-background absolute left-0 z-20 mt-2 hidden min-w-32 rounded-md border p-2 shadow-sm"
           >
-            Travel
-          </a>
+            {topicLinks.map(({ label, href }) => (
+              <li class="whitespace-nowrap">
+                <a
+                  href={getRelativeLocaleUrl(locale, href)}
+                  class:list={{ "active-nav": isCategoryActive(href.split("/").at(-1) ?? "") }}
+                  class="block rounded-sm px-2 py-1.5 text-sm transition-colors hover:text-accent"
+                >
+                  {label}
+                </a>
+              </li>
+            ))}
+          </ul>
         </li>
-        <li class="col-span-2">
-          <a
-            href={getRelativeLocaleUrl(locale, "categories/sports")}
-            class:list={{ "active-nav": isCategoryActive("sports") }}
-          >
-            Sports
-          </a>
-        </li>
-        <li class="col-span-2">
-          <a
-            href={getRelativeLocaleUrl(locale, "categories/stories")}
-            class:list={{ "active-nav": isCategoryActive("stories") }}
-          >
-            Stories
-          </a>
-        </li>
-        <li class="col-span-2">
+        <li>
           <a
             href={getRelativeLocaleUrl(locale, "about")}
             class:list={{ "active-nav": isActive("/about") }}
@@ -125,9 +127,26 @@ const isCategoryActive = (category: string) =>
             {t.nav.about}
           </a>
         </li>
-        {
-          features.showArchives && (
-            <li class="col-span-2">
+      </ul>
+    </nav>
+
+    <div class="justify-self-end">
+      <ul class="flex items-center gap-1">
+        <li class="flex items-center gap-1">
+          <a
+            href={getRelativeLocaleUrl(locale, "favorites")}
+            class:list={[
+              "focus-outline inline-flex size-7 shrink-0 items-center justify-center rounded-full",
+              { "active-nav": isActive("/favorites") },
+            ]}
+            title="Favorites"
+            aria-label="Favorites"
+          >
+            <span aria-hidden="true" class="text-base leading-none">★</span>
+            <span class="sr-only">Favorites</span>
+          </a>
+          {
+            features.showArchives && (
               <LinkButton
                 href={getRelativeLocaleUrl(locale, "archives")}
                 class:list={[
@@ -146,15 +165,13 @@ const isCategoryActive = (category: string) =>
                   />
                 )}
               </LinkButton>
-            </li>
-          )
-        }
-        {
-          features.search !== false && (
-            <li class="col-span-1 flex items-center justify-center">
+            )
+          }
+          {
+            features.search !== false && (
               <LinkButton
                 href={getRelativeLocaleUrl(locale, "search")}
-                class:list={["focus-outline relative size-8"]}
+                class:list={["focus-outline relative size-7 shrink-0"]}
                 title={t.nav.search}
                 aria-label={t.nav.search}
               >
@@ -167,15 +184,13 @@ const isCategoryActive = (category: string) =>
                   />
                 )}
               </LinkButton>
-            </li>
-          )
-        }
-        {
-          features.lightAndDarkMode && (
-            <li class="col-span-1 flex items-center justify-center">
+            )
+          }
+          {
+            features.lightAndDarkMode && (
               <button
                 id="theme-btn"
-                class="focus-outline hover:[&>svg]:stroke-accent relative size-12 p-4 sm:size-8"
+                class="focus-outline hover:[&>svg]:stroke-accent relative size-12 p-4 sm:size-7 sm:shrink-0"
                 title={t.a11y.toggleTheme}
                 aria-label="auto"
                 aria-live="polite"
@@ -183,11 +198,11 @@ const isCategoryActive = (category: string) =>
                 <IconMoon class="absolute top-[50%] left-[50%] translate-[-50%] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
                 <IconSunHigh class="absolute top-[50%] left-[50%] translate-[-50%] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
               </button>
-            </li>
-          )
-        }
+            )
+          }
+        </li>
       </ul>
-    </nav>
+    </div>
   </div>
 </header>
 
@@ -213,6 +228,28 @@ const isCategoryActive = (category: string) =>
       menuItems.classList.toggle("grid");
       menuIcon.classList.toggle("hidden");
       closeIcon.classList.toggle("hidden");
+    });
+  }
+
+  function toggleTopicsMenu() {
+    const topicsToggle = document.querySelector<HTMLButtonElement>("#topics-toggle");
+    const topicsMenu = document.querySelector<HTMLUListElement>("#topics-menu");
+
+    if (!topicsToggle || !topicsMenu) return;
+
+    topicsToggle.addEventListener("click", event => {
+      event.stopPropagation();
+      const isExpanded = topicsToggle.getAttribute("aria-expanded") === "true";
+      topicsToggle.setAttribute("aria-expanded", String(!isExpanded));
+      topicsMenu.classList.toggle("hidden", isExpanded);
+    });
+
+    document.addEventListener("click", event => {
+      const target = event.target as Node;
+      if (!topicsToggle.contains(target) && !topicsMenu.contains(target)) {
+        topicsToggle.setAttribute("aria-expanded", "false");
+        topicsMenu.classList.add("hidden");
+      }
     });
   }
 
@@ -247,6 +284,9 @@ const isCategoryActive = (category: string) =>
 
   toggleNav();
   document.addEventListener("astro:after-swap", toggleNav);
+
+  toggleTopicsMenu();
+  document.addEventListener("astro:after-swap", toggleTopicsMenu);
 
   handleSkipToContent();
   document.addEventListener("astro:after-swap", handleSkipToContent);

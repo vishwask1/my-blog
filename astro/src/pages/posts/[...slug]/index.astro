@@ -16,6 +16,7 @@ import BackButton from "./_components/BackButton.astro";
 import BackToTopButton from "./_components/BackToTopButton.astro";
 import AdjacentPostNav from "./_components/AdjacentPostNav.astro";
 import ReadNext from "./_components/ReadNext.astro";
+import BookmarkButton from "@/components/BookmarkButton.astro";
 import FeedbackForm from "@/components/FeedbackForm.astro";
 import config from "@/config";
 
@@ -139,6 +140,11 @@ const ogImage = ogImageUrl
         |
       </span>
       <EditPost {hideEditPost} {post} class="max-sm:hidden" />
+      <BookmarkButton
+        postId={post.id}
+        postTitle={title}
+        postUrl={getPostUrl(post.id, post.filePath, locale)}
+      />
     </div>
 
     <article
@@ -250,10 +256,10 @@ const ogImage = ogImageUrl
       copyButton.className = `copy-code absolute end-3 ${topClass} rounded bg-muted border border-muted px-2 py-1 text-xs leading-4 text-foreground font-medium`;
       copyButton.innerHTML = copyButtonLabel;
       codeBlock.setAttribute("tabindex", "0");
-      codeBlock.appendChild(copyButton);
 
       codeBlock?.parentNode?.insertBefore(wrapper, codeBlock);
       wrapper.appendChild(codeBlock);
+      wrapper.appendChild(copyButton);
 
       copyButton.addEventListener("click", async () => {
         await copyCode(codeBlock, copyButton);
@@ -262,9 +268,42 @@ const ogImage = ogImageUrl
 
     async function copyCode(block, button) {
       const code = block.querySelector("code");
-      const text = code?.innerText;
+      const rawText = code?.innerText ?? block.innerText;
+      const text = `${rawText.trimEnd()}\n\nBy Vishwas`;
 
-      await navigator.clipboard.writeText(text ?? "");
+      try {
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(text);
+        } else {
+          const helper = document.createElement("textarea");
+          helper.value = text;
+          helper.setAttribute("readonly", "");
+          helper.style.position = "fixed";
+          helper.style.opacity = "0";
+          document.body.appendChild(helper);
+          helper.select();
+          document.execCommand("copy");
+          document.body.removeChild(helper);
+        }
+      } catch {
+        const helper = document.createElement("textarea");
+        helper.value = text;
+        helper.setAttribute("readonly", "");
+        helper.style.position = "fixed";
+        helper.style.opacity = "0";
+        document.body.appendChild(helper);
+        helper.select();
+        try {
+          document.execCommand("copy");
+        } catch {
+          button.innerText = "Copy failed";
+          setTimeout(() => {
+            button.innerText = copyButtonLabel;
+          }, 1200);
+          return;
+        }
+        document.body.removeChild(helper);
+      }
 
       button.innerText = "Copied";
 

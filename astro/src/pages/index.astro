@@ -11,6 +11,7 @@ import LinkButton from "@/components/LinkButton.astro";
 import { getSortedPosts } from "@/utils/getSortedPosts";
 import { useTranslations } from "@/i18n";
 import config from "@/config";
+import { getUniqueCategories } from "@/utils/getUniqueCategories";
 
 const { site, socials, posts: postsConfig } = config;
 
@@ -22,6 +23,10 @@ const sortedPosts = getSortedPosts(posts);
 const featuredPosts = sortedPosts.filter(({ data }) => data.featured);
 const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
 const homePath = getRelativeLocaleUrl(locale, "");
+const topicChips = getUniqueCategories(posts).map(({ label, slug }) => ({
+  label,
+  href: getRelativeLocaleUrl(locale, `categories/${slug}`),
+}));
 ---
 
 <Layout>
@@ -39,7 +44,23 @@ const homePath = getRelativeLocaleUrl(locale, "");
 
       <p>
         {site.description}
-      </p>      
+      </p>
+    </section>
+
+    <section id="topic-chips" class="pt-6 pb-2">
+      <h2 class="mb-3 text-sm font-semibold uppercase tracking-[0.12em] text-muted-foreground">
+        Explore topics
+      </h2>
+      <div class="flex flex-wrap gap-2">
+        {topicChips.map(({ label, href }) => (
+          <a
+            href={href}
+            class="border-border text-foreground hover:text-accent hover:border-accent rounded-full border px-3 py-1.5 text-sm transition-colors"
+          >
+            {label}
+          </a>
+        ))}
+      </div>
     </section>
 
     {

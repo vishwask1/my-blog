@@ -1,0 +1,70 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
+import Breadcrumb from "@/components/Breadcrumb.astro";
+import Main from "@/components/Main.astro";
+import Footer from "@/components/Footer.astro";
+import config from "@/config";
+---
+
+<Layout title={`Favorites | ${config.site.title}`}>
+  <Header />
+  <Breadcrumb />
+
+  <Main pageTitle="Favorites" pageDesc="Saved poems and posts from your reading list.">
+    <div id="favorites-empty" class="text-muted-foreground italic hidden">
+      No saved posts yet. Bookmark a post to keep it here.
+    </div>
+    <ul id="favorites-list" class="space-y-4"></ul>
+  </Main>
+
+  <Footer />
+</Layout>
+
+<script>
+  type FavoriteItem = {
+    id: string;
+    title: string;
+    url: string;
+    savedAt: string;
+  };
+
+  const storageKey = "my-blog-favorites";
+  const list = document.getElementById("favorites-list");
+  const emptyState = document.getElementById("favorites-empty");
+
+  if (list) {
+    try {
+      const favorites = JSON.parse(
+        localStorage.getItem(storageKey) || "[]"
+      ) as FavoriteItem[];
+
+      if (!favorites.length && emptyState) {
+        emptyState.classList.remove("hidden");
+      }
+
+      favorites.forEach((item: FavoriteItem) => {
+        const li = document.createElement("li");
+        li.className = "rounded border border-border bg-background p-3";
+
+        const link = document.createElement("a");
+        link.href = item.url || "/";
+        link.className =
+          "text-accent inline-block text-lg font-medium hover:underline";
+        link.textContent = item.title || "Untitled";
+
+        const meta = document.createElement("div");
+        meta.className = "text-muted-foreground mt-1 text-sm";
+        meta.textContent = "Saved in your browser";
+
+        li.appendChild(link);
+        li.appendChild(meta);
+        list.appendChild(li);
+      });
+    } catch {
+      if (emptyState) {
+        emptyState.classList.remove("hidden");
+      }
+    }
+  }
+</script>
