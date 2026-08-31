@@ -38,13 +38,23 @@ const topicChips = getUniqueCategories(posts).map(({ label, slug }) => ({
     class="app-layout my-1"
   >
     <section id="hero" class="border-border border-b pt-2 pb-6">
-      <h1 class="my-2 inline-block text-1xl font-bold sm:my-4 sm:text-2xl">
-        {site.tagline}
-      </h1>
+      <div class="flex items-center gap-4">
+        <img
+          src="/profile/vishwas.png"
+          alt="Vishwas profile"
+          class="h-24 w-24 shrink-0 rounded-full object-cover shadow-sm sm:h-26 sm:w-26"
+        />
 
-      <p>
-        {site.description}
-      </p>
+        <div>
+          <h1 class="my-2 inline-block text-1xl font-bold sm:my-4 sm:text-2xl">
+            {site.tagline}
+          </h1>
+
+          <p>
+            {site.description}
+          </p>
+        </div>
+      </div>
     </section>
 
     <section id="topic-chips" class="pt-6 pb-2">
