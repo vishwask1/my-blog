@@ -54,7 +54,7 @@ const isCategoryActive = (category: string) =>
 
 <header class="app-layout">
   <div
-    class="border-border bg-background grid w-full grid-cols-[1fr_auto_1fr] items-center border-b py-4 sm:py-6"
+    class="border-border bg-background relative grid w-full grid-cols-[auto_1fr_auto] items-center border-b py-3 sm:grid-cols-[1fr_auto_1fr] sm:py-6"
   >
     <a
       href={getRelativeLocaleUrl(locale, "")}
@@ -69,7 +69,7 @@ const isCategoryActive = (category: string) =>
     >
       <button
         id="menu-btn"
-        class="focus-outline self-end p-2 sm:hidden"
+        class="focus-outline p-2 sm:hidden"
         aria-label={t.a11y.openMenu}
         aria-expanded="false"
         aria-controls="menu-items"
@@ -81,7 +81,7 @@ const isCategoryActive = (category: string) =>
       </button>
       <ul
         id="menu-items"
-        class="[&>li>a]:hover:text-accent [&>li>button]:hover:text-accent mt-4 hidden w-52 gap-2 sm:relative sm:left-0 sm:mt-0 sm:flex sm:w-auto sm:items-center sm:justify-center sm:gap-x-0.5 sm:gap-y-1 sm:[&>li]:h-auto [&>li>a]:block [&>li>a]:px-2 [&>li>a]:py-1.5 [&>li>a]:text-center [&>li>a]:font-medium sm:[&>li>a]:px-1.5 sm:[&>li>a]:py-1 [&>li>button]:block [&>li>button]:px-2 [&>li>button]:py-1.5 [&>li>button]:text-center [&>li>button]:font-medium sm:[&>li>button]:px-1.5 sm:[&>li>button]:py-1"
+        class="border-border bg-background [&>li>a]:hover:text-accent [&>li>button]:hover:text-accent absolute inset-x-0 top-full z-30 mt-0 hidden w-full gap-2 border-b px-4 py-3 shadow-sm sm:static sm:mt-0 sm:flex sm:w-auto sm:items-center sm:justify-center sm:gap-x-0.5 sm:gap-y-1 sm:border-0 sm:p-0 sm:shadow-none [&>li>a]:block [&>li>a]:px-2 [&>li>a]:py-1.5 [&>li>a]:text-center [&>li>a]:font-medium sm:[&>li>a]:px-1.5 sm:[&>li>a]:py-1 [&>li>button]:block [&>li>button]:px-2 [&>li>button]:py-1.5 [&>li>button]:text-center [&>li>button]:font-medium sm:[&>li>button]:px-1.5 sm:[&>li>button]:py-1"
       >
         <li>
           <a
@@ -150,14 +150,14 @@ const isCategoryActive = (category: string) =>
               <LinkButton
                 href={getRelativeLocaleUrl(locale, "archives")}
                 class:list={[
-                  "focus-outline flex size-full justify-center p-3 sm:relative sm:size-8 sm:p-0",
+                  "focus-outline relative flex size-7 shrink-0 justify-center p-0 sm:size-8",
                   { "active-nav": isActive("/archives") },
                 ]}
                 title={t.nav.archives}
                 aria-label={t.nav.archives}
               >
-                <IconArchive class="hidden sm:absolute sm:top-1/2 sm:left-1/2 sm:block sm:size-6 sm:-translate-x-1/2 sm:-translate-y-1/2" />
-                <span class="sm:sr-only">{t.nav.archives}</span>
+                <IconArchive class="absolute top-1/2 left-1/2 size-6 -translate-x-1/2 -translate-y-1/2" />
+                <span class="sr-only">{t.nav.archives}</span>
                 {isActive("/archives") && (
                   <IconUnderline
                     aria-hidden="true"
@@ -190,7 +190,7 @@ const isCategoryActive = (category: string) =>
             features.lightAndDarkMode && (
               <button
                 id="theme-btn"
-                class="focus-outline hover:[&>svg]:stroke-accent relative size-12 p-4 sm:size-7 sm:shrink-0"
+                class="focus-outline hover:[&>svg]:stroke-accent relative size-7 shrink-0 p-1 sm:size-7 sm:p-0"
                 title={t.a11y.toggleTheme}
                 aria-label="auto"
                 aria-live="polite"
