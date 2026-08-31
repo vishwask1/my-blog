@@ -48,7 +48,7 @@ export default {
     postsDesc: "All posts.",
 
     archivesTitle: "Archives",
-    archivesDesc: "All the articles I've archived.",
+    archivesDesc: "A collection of posts kept for reference.",
 
     searchTitle: "Search",
     searchDesc: "Search any article ...",

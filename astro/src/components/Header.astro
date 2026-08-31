@@ -54,7 +54,7 @@ const isCategoryActive = (category: string) =>
 
 <header class="app-layout">
   <div
-    class="border-border bg-background relative grid w-full grid-cols-[auto_1fr_auto] items-center border-b py-3 sm:grid-cols-[1fr_auto_1fr] sm:py-6"
+    class="border-border bg-background relative grid w-full grid-cols-[1fr_auto] items-center border-b py-3 sm:grid-cols-[1fr_auto_1fr] sm:py-6"
   >
     <a
       href={getRelativeLocaleUrl(locale, "")}
@@ -65,11 +65,11 @@ const isCategoryActive = (category: string) =>
 
     <nav
       id="nav-menu"
-      class="justify-self-center"
+      class="col-span-2 row-start-2 w-full justify-self-stretch sm:col-auto sm:row-auto sm:w-auto sm:justify-self-center"
     >
       <button
         id="menu-btn"
-        class="focus-outline p-2 sm:hidden"
+        class="focus-outline w-full border-t border-border p-2 text-start sm:hidden"
         aria-label={t.a11y.openMenu}
         aria-expanded="false"
         aria-controls="menu-items"
@@ -81,7 +81,7 @@ const isCategoryActive = (category: string) =>
       </button>
       <ul
         id="menu-items"
-        class="border-border bg-background [&>li>a]:hover:text-accent [&>li>button]:hover:text-accent absolute inset-x-0 top-full z-30 mt-0 hidden w-full gap-2 border-b px-4 py-3 shadow-sm sm:static sm:mt-0 sm:flex sm:w-auto sm:items-center sm:justify-center sm:gap-x-0.5 sm:gap-y-1 sm:border-0 sm:p-0 sm:shadow-none [&>li>a]:block [&>li>a]:px-2 [&>li>a]:py-1.5 [&>li>a]:text-center [&>li>a]:font-medium sm:[&>li>a]:px-1.5 sm:[&>li>a]:py-1 [&>li>button]:block [&>li>button]:px-2 [&>li>button]:py-1.5 [&>li>button]:text-center [&>li>button]:font-medium sm:[&>li>button]:px-1.5 sm:[&>li>button]:py-1"
+        class="border-border bg-background [&>li>a]:hover:text-accent [&>li>button]:hover:text-accent absolute inset-x-0 top-full z-30 mt-0 hidden w-full grid-cols-1 gap-2 border-b px-4 py-3 text-start shadow-sm sm:static sm:mt-0 sm:flex sm:w-auto sm:grid-cols-none sm:items-center sm:justify-center sm:gap-x-0.5 sm:gap-y-1 sm:border-0 sm:p-0 sm:text-center sm:shadow-none [&>li>a]:block [&>li>a]:px-2 [&>li>a]:py-1.5 [&>li>a]:text-start [&>li>a]:font-medium sm:[&>li>a]:px-1.5 sm:[&>li>a]:py-1 sm:[&>li>a]:text-center [&>li>button]:block [&>li>button]:px-2 [&>li>button]:py-1.5 [&>li>button]:text-start [&>li>button]:font-medium sm:[&>li>button]:px-1.5 sm:[&>li>button]:py-1 sm:[&>li>button]:text-center"
       >
         <li>
           <a
