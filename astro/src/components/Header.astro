@@ -81,7 +81,7 @@ const isCategoryActive = (category: string) =>
       </button>
       <ul
         id="menu-items"
-        class="border-border bg-background [&>li>a]:hover:text-accent [&>li>button]:hover:text-accent absolute inset-x-0 top-full z-30 mt-0 hidden w-full grid-cols-1 gap-2 border-b px-4 py-3 text-start shadow-sm sm:static sm:mt-0 sm:flex sm:w-auto sm:grid-cols-none sm:items-center sm:justify-center sm:gap-x-0.5 sm:gap-y-1 sm:border-0 sm:p-0 sm:text-center sm:shadow-none [&>li>a]:block [&>li>a]:px-2 [&>li>a]:py-1.5 [&>li>a]:text-start [&>li>a]:font-medium sm:[&>li>a]:px-1.5 sm:[&>li>a]:py-1 sm:[&>li>a]:text-center [&>li>button]:block [&>li>button]:px-2 [&>li>button]:py-1.5 [&>li>button]:text-start [&>li>button]:font-medium sm:[&>li>button]:px-1.5 sm:[&>li>button]:py-1 sm:[&>li>button]:text-center"
+        class="border-border bg-background [&>li>a]:hover:text-accent [&>li>button]:hover:text-accent absolute inset-x-0 top-full z-30 mt-0 hidden w-full grid-cols-1 gap-2 border-b px-4 py-3 text-start shadow-sm sm:static sm:mt-0 sm:flex sm:w-auto sm:grid-cols-none sm:items-center sm:justify-center sm:gap-x-2 sm:gap-y-1 sm:border-0 sm:p-0 sm:text-center sm:shadow-none [&>li>a]:block [&>li>a]:px-2 [&>li>a]:py-1.5 [&>li>a]:text-start [&>li>a]:font-medium sm:[&>li>a]:px-2 sm:[&>li>a]:py-1.5 sm:[&>li>a]:text-center [&>li>button]:block [&>li>button]:px-2 [&>li>button]:py-1.5 [&>li>button]:text-start [&>li>button]:font-medium sm:[&>li>button]:px-2 sm:[&>li>button]:py-1.5 sm:[&>li>button]:text-center"
       >
         <li>
           <a
@@ -95,12 +95,13 @@ const isCategoryActive = (category: string) =>
           <button
             id="topics-toggle"
             type="button"
-            class="focus-outline inline-flex items-center gap-1 rounded-md px-1.5 py-1 transition-colors hover:text-accent"
+            class="focus-outline inline-flex items-center gap-1.5 rounded-md px-1.5 py-1.5 text-base transition-colors hover:text-accent"
             aria-expanded="false"
             aria-controls="topics-menu"
+            aria-label={t.nav.filterByTopic}
           >
-            <span>Topics</span>
-            <span aria-hidden="true" class="text-xs">▾</span>
+            <span>{t.nav.filterByTopic}</span>
+            <span aria-hidden="true" class="text-sm leading-none">▾</span>
           </button>
           <ul
             id="topics-menu"
