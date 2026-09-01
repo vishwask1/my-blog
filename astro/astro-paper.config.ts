@@ -1,11 +1,18 @@
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
 import { defineAstroPaperConfig } from "./src/types/config";
+
+const siteDescription = readFileSync(
+  resolve(process.cwd(), "src/content/site-description.md"),
+  "utf-8",
+).trim();
 
 export default defineAstroPaperConfig({
   site: {
     url: "https://vishwask1.github.io/my-blog/",
     title: "Vishwas",
     tagline: "What is not spoken is written",
-    description: "A small archive of my writings — poems, travelogues, and other scribblings",
+    description: siteDescription,
     author: "Vishwas",
     ogImage: "default-og.jpg",
     lang: "en",
