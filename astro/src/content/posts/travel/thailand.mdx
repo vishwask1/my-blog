@@ -8,6 +8,14 @@ draft: false
 hideEditPost: true
 ---
 
+import podaImage from "@/assets/images/travel/thailand/poda.jpg";
+import ImageCaption from "@/components/ImageCaption.astro";
+import moodImage from "@/assets/images/travel/thailand/mood.jpg";
+import tigerCaveImage from "@/assets/images/travel/thailand/tiger_cave.jpg";
+import jamesBondImage from "@/assets/images/travel/thailand/james_bond.jpg";
+import phiPhiImage from "@/assets/images/travel/thailand/phi_phi.jpg";
+
+<ImageCaption image={moodImage} title="The mood in the island" />
 
 ## Disclaimers:
 
@@ -58,9 +66,7 @@ By the time I reached the top, I was drenched in sweat. I like it when I sweat. 
 When you sweat from head to toe, the whole of your body is breathing, the whole of it is living. Every cell is inhaling and exhaling, celebrating its life. All it needs is an opportunity to express itself. And all you need to do is to make up your mind, for your body to live its life. So, when you run your body just like any other machine, and it then sweats, I see it as a reward for the unification of body and mind. The roots of my pleasure lie here, I suppose.
 
 
-
-Tiger caves summit
-
+<ImageCaption image={tigerCaveImage} title="Tiger caves summit" />
 
 Enough said about mind and body, let me touch base upon a bit of Thailand I saw.
 
@@ -71,15 +77,13 @@ All the places we visited were kept extremely clean, all the roads that we trave
 All this in itself was very refreshing!
 
 
-
-Ko Poda island
+<ImageCaption image={podaImage} title="Ko Poda island" />
 
 
 As we were hopping from one island to the other, most of our time was spent either in ferries or long tail boats. The rest of the time we were either floating on the sea waters with our life jackets or snorkelling and peeping into the life under water or sauntering around the beaches.
 
 
-
-James Bond island
+<ImageCaption image={jamesBondImage} title="James Bond island" />
 
 Snorkelling was something very new to me and one which I enjoyed. The sea water at places was crystal clear and we could see through the water: the fishes, urchins and corals. At night, we also got a peek into the shining plankton.
 
@@ -118,3 +122,8 @@ Apart from driving his auto, he was also a part time trainer of Thai Boxing, so 
 To a random tourist guy, a father is showing a video of his kid boxing - in that very moment, with a stranger, I felt the warmth of togetherness. We shared a space common to both.
 
 It doesn't matter where we live, what language we speak, as long as we understand that we all live under the same umbrella of humanity and brotherhood.
+
+<ImageCaption
+	image={phiPhiImage}
+	title="The path we travel is the path that makes us"
+/>
