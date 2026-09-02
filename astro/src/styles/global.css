@@ -86,7 +86,7 @@
   display: block;
   margin: 2rem 0;
   white-space: pre-line;
-  font-family: var(--font-google-sans-code), "Georgia", serif;
+  font-family: var(--font-serif), "Georgia", serif;
   line-height: 1.9;
   letter-spacing: 0.02em;
   color: var(--foreground);

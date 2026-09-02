@@ -4,6 +4,7 @@
   /* ===== Override default Tailwind Typography styles ===== */
   .app-prose {
     @apply prose;
+    font-family: var(--font-serif);
 
     h1,
     h2,
@@ -11,6 +12,7 @@
     h4,
     th {
       @apply text-foreground mb-3;
+      font-family: var(--font-app);
     }
 
     h3 {
@@ -25,6 +27,7 @@
     table,
     code {
       @apply text-foreground;
+      font-family: var(--font-serif);
     }
 
     a {
