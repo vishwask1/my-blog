@@ -9,7 +9,7 @@ const siteDescription = readFileSync(
 
 export default defineAstroPaperConfig({
   site: {
-    url: "https://vishwask1.github.io/my-blog/",
+    url: "https://vishwask.ink",
     title: "Vishwas",
     tagline: "What is not spoken is written",
     description: siteDescription,
