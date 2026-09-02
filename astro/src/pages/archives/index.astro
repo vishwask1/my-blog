@@ -12,6 +12,7 @@ import { slugifyStr } from "@/utils/slugify";
 import { getPostsByGroupCondition } from "./_utils/getPostsByGroupCondition";
 import { useTranslations } from "@/i18n";
 import config from "@/config";
+import { sortCategories } from "@/utils/getUniqueCategories";
 
 const locale = Astro.currentLocale ?? config.site.lang;
 
@@ -26,7 +27,7 @@ const t = useTranslations(locale);
 const posts = await getCollection("posts");
 const filteredPosts = posts.filter(postFilter);
 const monthFormatter = new Intl.DateTimeFormat(locale, { month: "long" });
-const categoryNames = [...new Set(filteredPosts.flatMap(post => post.data.categories))].sort((a, b) => a.localeCompare(b));
+const categoryNames = sortCategories(filteredPosts.flatMap(post => post.data.categories));
 const categoryCounts = Object.fromEntries(
   categoryNames.map(category => [
     slugifyStr(category),
