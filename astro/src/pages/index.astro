@@ -23,6 +23,11 @@ const sortedPosts = getSortedPosts(posts);
 const featuredPosts = sortedPosts.filter(({ data }) => data.featured);
 const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
 const homePath = getRelativeLocaleUrl(locale, "");
+const descriptionParagraphs = [
+  "The scribblings here are born from — the places I've wandered, the pauses I've taken, the quiet spaces I've explored, the silences I've embraced.",
+  "The little joys and cries of life have found their comfort in these lines.",
+  "If and when I find words, they will land here at their own pace.",
+];
 const topicChips = getUniqueCategories(posts).map(({ label, slug }) => ({
   label,
   href: getRelativeLocaleUrl(locale, `categories/${slug}`),
@@ -50,9 +55,18 @@ const topicChips = getUniqueCategories(posts).map(({ label, slug }) => ({
             {site.tagline}
           </h1>
 
-          <p class="whitespace-pre-line">
-            {site.description}
-          </p>
+          <div class="site-intro">
+            {descriptionParagraphs.map((paragraph, index) => (
+              <p
+                class:list={[
+                  "site-intro__paragraph",
+                  { "site-intro__note": index === descriptionParagraphs.length - 1 },
+                ]}
+              >
+                {paragraph}
+              </p>
+            ))}
+          </div>
         </div>
       </div>
     </section>
