@@ -21,6 +21,7 @@
   --muted: #e6e6e6;
   --muted-foreground: #6b7280;
   --border: #ece9e9;
+  --popover: #f7f6f5;
 }
 
 /* Dark theme values */
@@ -32,4 +33,5 @@
   --muted: #343f60;
   --muted-foreground: #afb9ca;
   --border: #1d8cc0;
+  --popover: #2a3349;
 }

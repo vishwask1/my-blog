@@ -105,14 +105,14 @@ const isCategoryActive = (category: string) =>
           </button>
           <ul
             id="topics-menu"
-            class="border-border bg-background absolute left-0 z-20 mt-2 hidden min-w-32 rounded-md border p-2 shadow-sm"
+            class="border-border absolute left-0 z-20 mt-2 hidden w-fit min-w-32 rounded-md border bg-[var(--popover)] p-2 text-left shadow-sm"
           >
             {topicLinks.map(({ label, href }) => (
               <li class="whitespace-nowrap">
                 <a
                   href={getRelativeLocaleUrl(locale, href)}
                   class:list={{ "active-nav": isCategoryActive(href.split("/").at(-1) ?? "") }}
-                  class="block rounded-sm px-2 py-1.5 text-sm transition-colors hover:text-accent"
+                  class="block w-full rounded-sm px-2 py-1.5 text-left text-sm transition-colors hover:text-accent"
                 >
                   {label}
                 </a>
@@ -132,8 +132,8 @@ const isCategoryActive = (category: string) =>
     </nav>
 
     <div class="justify-self-end">
-      <ul class="flex items-center gap-2">
-        <li class="flex items-center gap-2">
+      <ul class="flex items-center gap-3">
+        <li class="flex items-center gap-3">
           <a
             href={getRelativeLocaleUrl(locale, "favorites")}
             class:list={[
