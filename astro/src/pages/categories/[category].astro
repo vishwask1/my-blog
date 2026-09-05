@@ -40,7 +40,9 @@ const title = category
   <Breadcrumb />
   <Main pageTitle={title} pageDesc={``}>
     <ul>
-      {categoryPosts.map(post => <Card {...post} />)}
+      {categoryPosts.map(post => (
+        <Card {...post} showThumbnail />
+      ))}
     </ul>
   </Main>
   <Footer />

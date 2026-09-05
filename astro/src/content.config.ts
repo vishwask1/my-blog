@@ -15,6 +15,7 @@ const posts = defineCollection({
       draft: z.boolean().optional(),
       categories: z.array(z.string()).default(["others"]),
       tags: z.array(z.string()).default(["others"]),
+      thumbnail: image().optional(),
       ogImage: image().or(z.string()).optional(),
       description: z.string(),
       canonicalURL: z.string().optional(),
